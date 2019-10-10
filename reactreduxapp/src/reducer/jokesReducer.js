@@ -6,11 +6,6 @@ export const initialState = {
   error: ''
 }
 
-// type: '', //single or twopart
-// joke: '', //only present for single type
-// setup: '', //only present for twopart
-// delivery: '', //only present for twopart
-
 export const reducer = (state = initialState, action) => {
   switch (action.type){
     case START_FETCHING:
