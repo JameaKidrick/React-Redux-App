@@ -89,7 +89,7 @@ const Joke = props => {
       </FormControl>
       
       <FormControl onSubmit={handleSubmit2} component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Blacklist Topics</FormLabel>
+        <FormLabel component="legend">WORK IN PROGRESS: Blacklist Topics</FormLabel>
         <FormGroup>
           <FormControlLabel
             control={<Checkbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />}
