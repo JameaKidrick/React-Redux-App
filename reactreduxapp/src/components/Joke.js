@@ -29,46 +29,52 @@ const useStyles = makeStyles(theme => ({
 
 const Joke = props => {
   const classes = useStyles();
-  const [selectedValue, setSelectedValue] = useState('')
   const [value, setValue] = useState('Programming');
-  
-  const [selectedState, setSelectedState] = useState([])
-  const [state, setState] = React.useState([]
-  //   {
-  //   gilad: true,
-  //   jason: false,
-  //   antoine: false,
-  // }
+  const [state, setState] = React.useState(
+    {
+    nsfw: true,
+    religious: false,
+    political: false,
+  }
   );
   const { nsfw, religious, political } = state;
   const error = [nsfw, religious, political].filter(v => v).length < 2;
 
   const handleChange = e => {
-    setSelectedValue(e.target.value)
+    setValue(e.target.value)
   };
 
   const handleChange2 = name => event => {
-  setSelectedState(event.target.checked === true ? [...state, name] : false
-  )};
+    // console.log('here')
+  setState({...state, [name]:event.target.checked})
+};
 
   console.log('VALUE', value)
-  console.log('SELECTEDVALUE', selectedValue)
   console.log('STATE', state)
-  console.log('SECLECTEDSTATE', selectedState)
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    let str = '';
+    for(let key in state){
+      if(state[key]){
+        str += `${key}`
+      }
+    }
+    console.log('str', str)
+    if(str.length > 0){
+      str = `?blacklistFlags=${str}`
+    }
+    newJoke(value+str);
+    console.log(value+str)
   }
 
-  const handleSubmit2 = e => {
-    e.preventDefault();
-    setSelectedValue('')
-    };
+  const newJoke = (searchQuery = value) => {
+    props.getJokes(searchQuery);
+  }
 
   useEffect(() => {
-    props.getJokes(value);
-  }, [value]);
+    newJoke()
+  }, []);
 
   
   if (props.isFetching){
@@ -77,18 +83,16 @@ const Joke = props => {
   return (
     <div>
       {props.error && <p>{props.error}</p>}
-      <FormControl required error={error} onSubmit={handleSubmit} component="fieldset" className={classes.formControl}>
+      <form onSubmit={handleSubmit}>
+      <FormControl required error={error} component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">Pick Category</FormLabel>
         <FormHelperText>Be careful</FormHelperText>
-        <RadioGroup aria-label="category" name="category" value={value, selectedValue} onChange={handleChange}>
+        <RadioGroup aria-label="category" name="category" value={value} onChange={handleChange}>
           <FormControlLabel value="Any" control={<Radio />} label="Any" />
           <FormControlLabel value="Dark" control={<Radio />} label="Dark" />
           <FormControlLabel value="Miscellaneous" control={<Radio />} label="Miscellaneous" />
           <FormControlLabel value="Programming" control={<Radio />} label="Programming" />
         </RadioGroup>
-      </FormControl>
-      
-      <FormControl onSubmit={handleSubmit2} component="fieldset" className={classes.formControl}>
         <FormLabel component="legend">WORK IN PROGRESS: Blacklist Topics</FormLabel>
         <FormGroup>
           <FormControlLabel
@@ -106,13 +110,12 @@ const Joke = props => {
             label="Political"
           />
         </FormGroup>
-      </FormControl>
-
-      <br />
-      <Button type='submit' variant="outlined" className={classes.button} onClick={() => {setValue(selectedValue);
-      setState(selectedState)}}>
+        <Button type='submit' variant="outlined" className={classes.button}>
         New Joke
       </Button>
+      </FormControl>
+      </form>
+
       <JokeCard 
       key={props.joke.id}
       joke={props.joke}
