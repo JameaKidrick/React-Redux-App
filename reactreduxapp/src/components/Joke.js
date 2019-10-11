@@ -31,27 +31,40 @@ const Joke = props => {
   const classes = useStyles();
   const [selectedValue, setSelectedValue] = useState('')
   const [value, setValue] = useState('Programming');
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
-  const { gilad, jason, antoine } = state;
-  const error = [gilad, jason, antoine].filter(v => v).length < 2;
+  
+  const [selectedState, setSelectedState] = useState([])
+  const [state, setState] = React.useState([]
+  //   {
+  //   gilad: true,
+  //   jason: false,
+  //   antoine: false,
+  // }
+  );
+  const { nsfw, religious, political } = state;
+  const error = [nsfw, religious, political].filter(v => v).length < 2;
 
   const handleChange = e => {
     setSelectedValue(e.target.value)
   };
 
   const handleChange2 = name => event => {
-    setState({ ...state, [name]: event.target.checked });
-  };
+  setSelectedState(event.target.checked === true ? [...state, name] : false
+  )};
+
+  console.log('VALUE', value)
+  console.log('SELECTEDVALUE', selectedValue)
+  console.log('STATE', state)
+  console.log('SECLECTEDSTATE', selectedState)
 
   const handleSubmit = e => {
     e.preventDefault();
-    setValue(e.target.value);
+
   }
-  console.log(state)
+
+  const handleSubmit2 = e => {
+    e.preventDefault();
+    setSelectedValue('')
+    };
 
   useEffect(() => {
     props.getJokes(value);
@@ -74,28 +87,30 @@ const Joke = props => {
           <FormControlLabel value="Programming" control={<Radio />} label="Programming" />
         </RadioGroup>
       </FormControl>
-      <FormControl component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Assign responsibility</FormLabel>
+      
+      <FormControl onSubmit={handleSubmit2} component="fieldset" className={classes.formControl}>
+        <FormLabel component="legend">Blacklist Topics</FormLabel>
         <FormGroup>
           <FormControlLabel
-            control={<Checkbox checked={gilad} onChange={handleChange2('gilad')} value="gilad" />}
-            label="Gilad Gray"
+            control={<Checkbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />}
+            label="NSFW"
           />
           <FormControlLabel
-            control={<Checkbox checked={jason} onChange={handleChange2('jason')} value="jason" />}
-            label="Jason Killian"
+            control={<Checkbox checked={religious} onChange={handleChange2('religious')} value="religious" />}
+            label="Religious"
           />
           <FormControlLabel
             control={
-              <Checkbox checked={antoine} onChange={handleChange2('antoine')} value="antoine" />
+              <Checkbox checked={political} onChange={handleChange2('political')} value="political" />
             }
-            label="Antoine Llorca"
+            label="Political"
           />
         </FormGroup>
       </FormControl>
 
       <br />
-      <Button type='submit' variant="outlined" className={classes.button} onSubmit={handleSubmit} onClick={() => setValue(selectedValue)}>
+      <Button type='submit' variant="outlined" className={classes.button} onClick={() => {setValue(selectedValue);
+      setState(selectedState)}}>
         New Joke
       </Button>
       <JokeCard 
