@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { getJokes } from '../actions'
 
 import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -11,13 +12,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormGroup from '@material-ui/core/FormGroup';
+import { grey, red, yellow } from '@material-ui/core/colors';
+  // https://material-ui.com/customization/color/
 
 // STYLING
 const useStyles = makeStyles(theme => ({
   button: {
     margin: theme.spacing(1),
+    backgroundColor: yellow['A400'],
+    color: grey[900]
   },
   input: {
     display: 'none',
@@ -27,6 +31,27 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const ColoredRadio = withStyles({
+  root: {
+    color: grey[600],
+    '&$checked': {
+      color: yellow['A400'],
+    },
+  },
+  checked: {},
+})(props => <Radio color="default" {...props} />);
+
+const ColoredCheckbox = withStyles({
+  root: {
+    color: grey[600],
+    '&$checked': {
+      color: red[600],
+    },
+  },
+  checked: {},
+})(props => <Checkbox color="default" {...props} />);
+
+// FORM CODE
 const JokeForm = props => {
   const classes = useStyles();
   const [value, setValue] = useState('Any');
@@ -38,7 +63,6 @@ const JokeForm = props => {
     }
   );
   const { nsfw, religious, political } = state;
-  const error = [nsfw, religious, political].filter(v => v).length < 2;
 
   const handleChange = e => {
     setValue(e.target.value)
@@ -73,33 +97,36 @@ const JokeForm = props => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <FormControl required error={error} component="fieldset" className={classes.formControl}>
+        <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Pick Category</FormLabel>
-          <FormHelperText>Be careful</FormHelperText>
           <RadioGroup aria-label="category" name="category" value={value} onChange={handleChange}>
-            <FormControlLabel value="Any" control={<Radio />} label="Random" />
-            <FormControlLabel value="Dark" control={<Radio />} label="Dark" />
-            <FormControlLabel value="Miscellaneous" control={<Radio />} label="Miscellaneous" />
-            <FormControlLabel value="Programming" control={<Radio />} label="Programming" />
+            <FormControlLabel value="Any" control={<ColoredRadio />} label="Random" />
+              <i style={{color: '#ffea00'}} class="fas fa-random"></i>
+            <FormControlLabel value="Dark" control={<ColoredRadio />} label="Dark" />
+              <i style={{color: '#ffea00'}} class="fas fa-skull"></i>
+            <FormControlLabel value="Miscellaneous" control={<ColoredRadio />} label="Miscellaneous" /> 
+              <i style={{color: '#ffea00'}} class="fas fa-asterisk"></i>
+            <FormControlLabel value="Programming" control={<ColoredRadio />} label="Programming" />
+              <i style={{color: '#ffea00'}} class="fas fa-laptop-code"></i>
           </RadioGroup>
           <br />
-          <FormLabel component="legend">WORK IN PROGRESS: Blacklist Topics</FormLabel>
+          <FormLabel component="legend">Blacklist Topics</FormLabel>
           <FormGroup>
             <FormControlLabel
               control={
-                <Checkbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />
+                <ColoredCheckbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />
               }
               label="NSFW"
             />
             <FormControlLabel
               control={
-                <Checkbox checked={religious} onChange={handleChange2('religious')} value="religious" />
+                <ColoredCheckbox checked={religious} onChange={handleChange2('religious')} value="religious" />
               }
               label="Religious"
             />
             <FormControlLabel
               control={
-                <Checkbox checked={political} onChange={handleChange2('political')} value="political" />
+                <ColoredCheckbox checked={political} onChange={handleChange2('political')} value="political" />
               }
               label="Political"
             />
