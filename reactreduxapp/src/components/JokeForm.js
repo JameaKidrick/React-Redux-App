@@ -35,7 +35,7 @@ const JokeForm = props => {
     nsfw: true,
     religious: true,
     political: true,
-  }
+    }
   );
   const { nsfw, religious, political } = state;
   const error = [nsfw, religious, political].filter(v => v).length < 2;
@@ -46,7 +46,7 @@ const JokeForm = props => {
 
   const handleChange2 = name => event => {
   setState({...state, [name]:event.target.checked})
-};
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,12 +56,10 @@ const JokeForm = props => {
         str += `${key}`
       }
     }
-    console.log('str', str)
     if(str.length > 0){
       str = `?blacklistFlags=${str}`
     }
     newJoke(value+str);
-    console.log(value+str)
   }
 
   const newJoke = (searchQuery = value) => {
@@ -72,54 +70,52 @@ const JokeForm = props => {
     newJoke()
   }, []);
 
-  
-  if (props.isFetching){
-    return <h2>MAKING JOKES...</h2>
-  }
   return (
     <div>
-      {props.error && <p>{props.error}</p>}
       <form onSubmit={handleSubmit}>
-      <FormControl required error={error} component="fieldset" className={classes.formControl}>
-        <FormLabel component="legend">Pick Category</FormLabel>
-        <FormHelperText>Be careful</FormHelperText>
-        <RadioGroup aria-label="category" name="category" value={value} onChange={handleChange}>
-          <FormControlLabel value="Any" control={<Radio />} label="Random" />
-          <FormControlLabel value="Dark" control={<Radio />} label="Dark" />
-          <FormControlLabel value="Miscellaneous" control={<Radio />} label="Miscellaneous" />
-          <FormControlLabel value="Programming" control={<Radio />} label="Programming" />
-        </RadioGroup>
-        <FormLabel component="legend">WORK IN PROGRESS: Blacklist Topics</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />}
-            label="NSFW"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={religious} onChange={handleChange2('religious')} value="religious" />}
-            label="Religious"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox checked={political} onChange={handleChange2('political')} value="political" />
-            }
-            label="Political"
-          />
-        </FormGroup>
-        <Button type='submit' variant="outlined" className={classes.button}>
-        New Joke
-      </Button>
-      </FormControl>
+        <FormControl required error={error} component="fieldset" className={classes.formControl}>
+          <FormLabel component="legend">Pick Category</FormLabel>
+          <FormHelperText>Be careful</FormHelperText>
+          <RadioGroup aria-label="category" name="category" value={value} onChange={handleChange}>
+            <FormControlLabel value="Any" control={<Radio />} label="Random" />
+            <FormControlLabel value="Dark" control={<Radio />} label="Dark" />
+            <FormControlLabel value="Miscellaneous" control={<Radio />} label="Miscellaneous" />
+            <FormControlLabel value="Programming" control={<Radio />} label="Programming" />
+          </RadioGroup>
+          <br />
+          <FormLabel component="legend">WORK IN PROGRESS: Blacklist Topics</FormLabel>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />
+              }
+              label="NSFW"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox checked={religious} onChange={handleChange2('religious')} value="religious" />
+              }
+              label="Religious"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox checked={political} onChange={handleChange2('political')} value="political" />
+              }
+              label="Political"
+            />
+          </FormGroup>
+          <Button type='submit' variant="outlined" className={classes.button}>
+            New Joke
+          </Button>
+        </FormControl>
       </form>
-      </div>
+    </div>
   )
 }
 
 const mapStateToProps = state => {
   return {
-    joke: state.joke,
-    isFetching: state.isFetching,
-    error: state.error
+    joke: state.joke
   };
 };
 
