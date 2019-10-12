@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
+import SyncLoader from 'react-spinners/SyncLoader'
+
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Collapse from '@material-ui/core/Collapse';
@@ -28,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   card: {
     border: '2px solid #ffea00',
     width: '50%'
-  }
+  },
 }));
 
 const JokeCard = props => {
@@ -42,7 +44,11 @@ const JokeCard = props => {
 
 
   if (props.fetching){
-    return <h2>MAKING JOKES...</h2>
+    return(
+      <SyncLoader
+        color={'#ffea00'}
+        className={classes.loader}
+      />)
   }
   return(
     <Card className={classes.card}>
