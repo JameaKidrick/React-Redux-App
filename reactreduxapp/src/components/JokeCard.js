@@ -11,8 +11,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
-import { yellow } from '@material-ui/core/colors';
+import Typography from '@material-ui/core/Typography';
+import { yellow} from '@material-ui/core/colors';
 
+/*************************** STYLING *****************************/
 const useStyles = makeStyles(theme => ({
   expand: {
     transform: 'rotate(0deg)',
@@ -26,15 +28,43 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: yellow['A400'],
+    color:'rgb(24,26,27)'
   },
   card: {
     border: '2px solid #ffea00',
-    width: '50%',
     backgroundColor: 'rgb(24,26,27)',
     fontFamily:'Roboto, sans serif',
-    color: 'white'
+    color: 'white',
+    marginTop:'25%',
+    padding: '5%'
   },
 }));
+
+const styleParent = {
+  display: 'flex',
+  alignItems: 'center'
+}
+
+const styleExpand = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  width: '24%',
+  marginLeft:'70%'
+}
+
+const styleChild1 = {
+  color: '#ffea00', 
+  fontFamily:'Roboto, sans serif',
+  width: 'auto'
+}
+
+const styleChild2 = {
+  color: '#ffea00',
+  width: '2%'
+}
+
+/*************************** FUNCTIONALITY *****************************/
 
 const JokeCard = props => {
   const classes = useStyles();
@@ -50,41 +80,44 @@ const JokeCard = props => {
     return(
       <SyncLoader
         color={'#ffea00'}
-        className={classes.loader}
       />)
   }
   return(
     <Card className={classes.card}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            {
-              props.joke.category === 'Any' ? <i class="fas fa-random"></i> : 
-              props.joke.category === 'Dark' ? <i class="fas fa-skull"></i> :
-              props.joke.category === 'Miscellaneous' ? <i class="fas fa-asterisk"></i> :
-              props.joke.category === 'Programming' ? <i class="fas fa-laptop-code"></i> : false
-            }
-          </Avatar>
-        }
-        title={`${props.joke.category}`}
-      />
+      <section style={styleParent}>
+        <CardHeader style={{width: '10%'}}
+          avatar={
+            <Avatar aria-label="recipe" className={classes.avatar}>
+              {
+                props.joke.category === 'Any' ? <i class="fas fa-random"></i> : 
+                props.joke.category === 'Dark' ? <i class="fas fa-skull"></i> :
+                props.joke.category === 'Miscellaneous' ? <i class="fas fa-asterisk"></i> :
+                props.joke.category === 'Programming' ? <i class="fas fa-laptop-code"></i> : false
+              }
+            </Avatar>
+          }
+        />
+        <Typography variant='h5' style={{width: '50%'}}>{props.joke.category}</Typography>
+      </section>
       {
         props.joke.type === 'single' ? 
         <p>{props.joke.joke}</p> : 
         <>
-          <h3>{props.joke.setup}</h3>
-          <div style={{color: '#ffea00', fontFamily:'Roboto, sans serif'}}>See More</div>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            style={{color: '#ffea00'}}
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+          <p>{props.joke.setup}</p>
+          <section style={styleExpand}>
+            <div style={styleChild1}>{!expanded ? 'See More':'Collapse'}</div>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              style={styleChild2}
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </section>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <p>{props.joke.delivery}</p> 
           </ Collapse>

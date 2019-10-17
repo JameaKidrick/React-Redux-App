@@ -53,8 +53,6 @@ const ColoredRadio = withStyles({
   checked: {},
 })(props => <Radio color="default" {...props} />);
 
-// grey[600]
-
 const ColoredCheckbox = withStyles({
   root: {
     color: grey[600],
@@ -112,41 +110,53 @@ const JokeForm = props => {
     <div>
       <form onSubmit={handleSubmit}>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend" className={classes.root}>Pick Category</FormLabel>
-          <RadioGroup aria-label="category" name="category" value={value} onChange={handleRadioChanges}>
-            <FormControlLabel value="Any" control={<ColoredRadio />} label="Random" />
-              <i style={{color: '#ffea00'}} class="fas fa-random"></i>
-            <FormControlLabel value="Dark" control={<ColoredRadio />} label="Dark" />
-              <i style={{color: '#ffea00'}} class="fas fa-skull"></i>
-            <FormControlLabel value="Miscellaneous" control={<ColoredRadio />} label="Miscellaneous" /> 
-              <i style={{color: '#ffea00'}} class="fas fa-asterisk"></i>
-            <FormControlLabel value="Programming" control={<ColoredRadio />} label="Programming" />
-              <i style={{color: '#ffea00'}} class="fas fa-laptop-code"></i>
-          </RadioGroup>
+          <div className='categoryContainer'>
+            <FormLabel component="legend" className={classes.root}>Pick Category</FormLabel>
+            <RadioGroup aria-label="category" name="category" value={value} onChange={handleRadioChanges}>
+              <section style={{display:'flex'}}>
+                <FormControlLabel value="Any" control={<ColoredRadio />} label="Random" />
+                  <i style={{color: '#ffea00', marginTop: '8%'}} class="fas fa-random"></i>
+              </section>
+              <section>
+                <FormControlLabel value="Dark" control={<ColoredRadio />} label="Dark" />
+                  <i style={{color: '#ffea00'}} class="fas fa-skull"></i>
+              </section>
+              <section>
+                <FormControlLabel value="Miscellaneous" control={<ColoredRadio />} label="Miscellaneous" /> 
+                  <i style={{color: '#ffea00'}} class="fas fa-asterisk"></i>
+              </section>
+              <section>
+                <FormControlLabel value="Programming" control={<ColoredRadio />} label="Programming" />
+                  <i style={{color: '#ffea00'}} class="fas fa-laptop-code"></i>
+              </section>
+            </RadioGroup>
+          </div>
 
           <br />
 
-          <FormLabel component="legend" className={classes.root}>Blacklist Topics</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <ColoredCheckbox checked={nsfw} onChange={handleCheckboxChanges('nsfw')} value="nsfw" />
-              }
-              label="NSFW"
-            />
-            <FormControlLabel
-              control={
-                <ColoredCheckbox checked={religious} onChange={handleCheckboxChanges('religious')} value="religious" />
-              }
-              label="Religious"
-            />
-            <FormControlLabel
-              control={
-                <ColoredCheckbox checked={political} onChange={handleCheckboxChanges('political')} value="political" />
-              }
-              label="Political"
-            />
-          </FormGroup>
+          <div className='blacklistContainer'>
+            <FormLabel component="legend" className={classes.root}>Blacklist Topics</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <ColoredCheckbox checked={nsfw} onChange={handleCheckboxChanges('nsfw')} value="nsfw" />
+                }
+                label="NSFW"
+              />
+              <FormControlLabel
+                control={
+                  <ColoredCheckbox checked={religious} onChange={handleCheckboxChanges('religious')} value="religious" />
+                }
+                label="Religious"
+              />
+              <FormControlLabel
+                control={
+                  <ColoredCheckbox checked={political} onChange={handleCheckboxChanges('political')} value="political" />
+                }
+                label="Political"
+              />
+            </FormGroup>
+          </div>
           <Button type='submit' variant="outlined" className={classes.button}>
             New Joke
           </Button>
