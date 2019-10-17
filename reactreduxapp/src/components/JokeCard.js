@@ -29,7 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     border: '2px solid #ffea00',
-    width: '50%'
+    width: '50%',
+    backgroundColor: 'rgb(24,26,27)',
+    fontFamily:'Roboto, sans serif',
+    color: 'white'
   },
 }));
 
@@ -70,7 +73,7 @@ const JokeCard = props => {
         <p>{props.joke.joke}</p> : 
         <>
           <h3>{props.joke.setup}</h3>
-          <div style={{color: '#ffea00'}}>See More</div>
+          <div style={{color: '#ffea00', fontFamily:'Roboto, sans serif'}}>See More</div>
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,

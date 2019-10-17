@@ -18,10 +18,22 @@ import { grey, red, yellow } from '@material-ui/core/colors';
 
 // STYLING
 const useStyles = makeStyles(theme => ({
+  // normal style class for the FormLabel is '.MuiFormLabel-root' and '.MuiFormLabel-root.Mui-focused'
+    // when focused the form label turns blue, but I don't what anything to happen when focused; add an ampersand before the extra bit (in this case '.Mui-focused') to target the focused part
+  root: {
+    color: 'rgb(121,135,131)',
+    fontSize: '135%',
+    '&.Mui-focused': {
+      color: 'rgb(121,135,131)'
+    }
+  },
   button: {
     margin: theme.spacing(1),
     backgroundColor: yellow['A400'],
-    color: grey[900]
+    color: grey[900],
+    '&:hover': {
+      backgroundColor: yellow['A400'],
+    }
   },
   input: {
     display: 'none',
@@ -33,13 +45,15 @@ const useStyles = makeStyles(theme => ({
 
 const ColoredRadio = withStyles({
   root: {
-    color: grey[600],
+    color: "rgb(182,177,168)",
     '&$checked': {
       color: yellow['A400'],
     },
   },
   checked: {},
 })(props => <Radio color="default" {...props} />);
+
+// grey[600]
 
 const ColoredCheckbox = withStyles({
   root: {
@@ -64,11 +78,11 @@ const JokeForm = props => {
   );
   const { nsfw, religious, political } = state;
 
-  const handleChange = e => {
+  const handleRadioChanges = e => {
     setValue(e.target.value)
   };
 
-  const handleChange2 = name => event => {
+  const handleCheckboxChanges = name => event => {
   setState({...state, [name]:event.target.checked})
   };
 
@@ -98,8 +112,8 @@ const JokeForm = props => {
     <div>
       <form onSubmit={handleSubmit}>
         <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">Pick Category</FormLabel>
-          <RadioGroup aria-label="category" name="category" value={value} onChange={handleChange}>
+          <FormLabel component="legend" className={classes.root}>Pick Category</FormLabel>
+          <RadioGroup aria-label="category" name="category" value={value} onChange={handleRadioChanges}>
             <FormControlLabel value="Any" control={<ColoredRadio />} label="Random" />
               <i style={{color: '#ffea00'}} class="fas fa-random"></i>
             <FormControlLabel value="Dark" control={<ColoredRadio />} label="Dark" />
@@ -109,24 +123,26 @@ const JokeForm = props => {
             <FormControlLabel value="Programming" control={<ColoredRadio />} label="Programming" />
               <i style={{color: '#ffea00'}} class="fas fa-laptop-code"></i>
           </RadioGroup>
+
           <br />
-          <FormLabel component="legend">Blacklist Topics</FormLabel>
+
+          <FormLabel component="legend" className={classes.root}>Blacklist Topics</FormLabel>
           <FormGroup>
             <FormControlLabel
               control={
-                <ColoredCheckbox checked={nsfw} onChange={handleChange2('nsfw')} value="nsfw" />
+                <ColoredCheckbox checked={nsfw} onChange={handleCheckboxChanges('nsfw')} value="nsfw" />
               }
               label="NSFW"
             />
             <FormControlLabel
               control={
-                <ColoredCheckbox checked={religious} onChange={handleChange2('religious')} value="religious" />
+                <ColoredCheckbox checked={religious} onChange={handleCheckboxChanges('religious')} value="religious" />
               }
               label="Religious"
             />
             <FormControlLabel
               control={
-                <ColoredCheckbox checked={political} onChange={handleChange2('political')} value="political" />
+                <ColoredCheckbox checked={political} onChange={handleCheckboxChanges('political')} value="political" />
               }
               label="Political"
             />
